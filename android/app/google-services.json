@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "317439289562",
+    "firebase_url": "https://kamachi-project.firebaseio.com",
+    "project_id": "kamachi-project",
+    "storage_bucket": "kamachi-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317439289562:android:4697b1beedb3a68d3edde3",
+        "android_client_info": {
+          "package_name": "aniruddh.kamachiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317439289562-2is6nslepm0bdni85gcivkctceub468m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "aniruddh.kamachiapp",
+            "certificate_hash": "d7fe8b41ae1d660223f28ed5cecb0b19fcb3aea7"
+          }
+        },
+        {
+          "client_id": "317439289562-5m6l94eiv0ben7953rnc859iorqv3b83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB39q9qH8ufNqdlrkowg8NmU1r04kTwYl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317439289562-5m6l94eiv0ben7953rnc859iorqv3b83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
