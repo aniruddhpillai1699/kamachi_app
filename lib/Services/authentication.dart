@@ -10,6 +10,8 @@ abstract class BaseAuth {
 
   Future<void> sendEmailVerification();
 
+  Future<void> sendPasswordResetMail(String email);
+
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
@@ -17,7 +19,6 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
   Future<String> signIn(String email, String password) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
@@ -29,16 +30,28 @@ class Auth implements BaseAuth {
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
+    try {
+      await user.sendEmailVerification();
+      return user.uid;
+    } catch (e) {
+      print("An error occurred while trying to send email verification");
+      print(e.message);
+    }
     return user.uid;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
+
     return user;
   }
 
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   Future<void> sendEmailVerification() async {
@@ -49,5 +62,11 @@ class Auth implements BaseAuth {
   Future<bool> isEmailVerified() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
+  }
+
+  @override
+  Future<void> sendPasswordResetMail(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+    return null;
   }
 }

@@ -11,10 +11,11 @@ class PendingReport extends StatefulWidget {
 
 class _PendingReportState extends State<PendingReport> {
   List<Report> list;
-  final dbRef = FirebaseDatabase.instance.reference().child("Report");
+  final dbRef = FirebaseDatabase.instance.reference().child("reports");
   StreamSubscription<Event> _onReportAddedSubscription;
   StreamSubscription<Event> _onReportChangedSubscription;
   Query reportQuery;
+
   @override
   void initState() {
     super.initState();
@@ -35,17 +36,9 @@ class _PendingReportState extends State<PendingReport> {
     });
   }
 
-  void _deleteNote(BuildContext context, Report report, int index) async {
-    await dbRef.child(report.key).remove().then((_) {
-      setState(() {
-        list.removeAt(index);
-      });
-    });
-  }
-
   _onReportUpdated(Event event) {
     var oldNoteValue =
-        list.singleWhere((note) => note.key == event.snapshot.key);
+        list.singleWhere((report) => report.key == event.snapshot.key);
     setState(() {
       list[list.indexOf(oldNoteValue)] =
           new Report.fromSnapshot(event.snapshot);
@@ -74,7 +67,8 @@ class _PendingReportState extends State<PendingReport> {
                   Divider(height: 5.0),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text("Date of Complaint: " + list[index].date)),
+                      child: Text(
+                          "Date of Complaint: " + list[index].dateofcomplaint)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
@@ -111,10 +105,6 @@ class _PendingReportState extends State<PendingReport> {
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text('Changes If Any: ' + list[index].changes)),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _deleteNote(context, list[index], index),
-                  )
                 ],
               ),
             ),
@@ -124,7 +114,7 @@ class _PendingReportState extends State<PendingReport> {
     } else {
       return Center(
           child: Text(
-        "Welcome. Your list is empty",
+        "List is empty! No pending reports :)",
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 30.0),
       ));

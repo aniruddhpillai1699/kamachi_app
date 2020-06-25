@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kamachiapp/Pages/forgot_password_page.dart';
 import 'package:kamachiapp/Services/authentication.dart';
 
 class LoginSignupPage extends StatefulWidget {
@@ -46,8 +47,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           print('Signed in: $userId');
         } else {
           userId = await widget.auth.signUp(_email, _password);
-          //widget.auth.sendEmailVerification();
-          //_showVerifyEmailSentDialog();
+          widget.auth.sendEmailVerification();
+          _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
         }
         setState(() {
@@ -111,28 +112,48 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-//  void _showVerifyEmailSentDialog() {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: new Text("Verify your account"),
-//          content:
-//              new Text("Link to verify account has been sent to your email"),
-//          actions: <Widget>[
-//            new FlatButton(
-//              child: new Text("Dismiss"),
-//              onPressed: () {
-//                toggleFormMode();
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
+  /*void _passwordResetDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Forgot Password"),
+            content:
+                Text("Link to reset your password has been sent to your email"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Dismiss"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }*/
+
+  void _showVerifyEmailSentDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Verify your account"),
+          content:
+              new Text("Link to verify account has been sent to your email"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                toggleFormMode();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _text() {
     return Padding(
@@ -235,13 +256,34 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Widget showSecondaryButton() {
-    return new FlatButton(
-        child: new Text(
-            _isLoginForm
-                ? 'Don\'t Have an Account? Create an account'
-                : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-        onPressed: toggleFormMode);
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      children: <Widget>[
+        FlatButton(
+            child: new Text(
+                _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
+                style: new TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black)),
+            onPressed: toggleFormMode),
+        FlatButton(
+            onPressed: () {
+              var auth = Auth();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ForgotPasswordPage(auth: auth)));
+            },
+            child: Text(
+              _isLoginForm ? 'Forgot Password' : '',
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black),
+            )),
+      ],
+    );
   }
 
   Widget showPrimaryButton() {
