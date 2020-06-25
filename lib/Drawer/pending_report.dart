@@ -23,7 +23,7 @@ class _PendingReportState extends State<PendingReport> {
     //_checkEmailVerification();
 
     list = new List();
-    reportQuery = dbRef.reference().orderByChild("status").equalTo("Pending");
+    reportQuery = dbRef.orderByChild("status").equalTo("Pending");
     _onReportAddedSubscription =
         reportQuery.onChildAdded.listen(_onReportAdded);
     _onReportChangedSubscription =

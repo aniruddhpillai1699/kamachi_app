@@ -276,7 +276,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       builder: (context) => ForgotPasswordPage(auth: auth)));
             },
             child: Text(
-              _isLoginForm ? 'Forgot Password' : '',
+              _isLoginForm ? 'Forgot password' : '',
               style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w300,

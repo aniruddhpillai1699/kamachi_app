@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kamachiapp/Drawer/about_app.dart';
+import 'package:kamachiapp/Drawer/completed_report.dart';
+import 'package:kamachiapp/Drawer/pending_report.dart';
 import 'package:kamachiapp/Pages/FormPage.dart';
 import 'package:kamachiapp/model/report.dart';
 import 'package:kamachiapp/Services/authentication.dart';
@@ -204,6 +207,59 @@ class _HomePageState extends State<HomePage> {
                   showAlertDialog(context);
                 })
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/download.png"),
+                        fit: BoxFit.cover),
+                    color: Colors.blueAccent),
+                child: Text(''),
+              ),
+              Divider(
+                height: 10.0,
+              ),
+              ListTile(
+                title: Text('Completed Report'),
+                leading: Icon(Icons.report),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CompletedReport()));
+                },
+              ),
+              Divider(
+                height: 5,
+              ),
+              ListTile(
+                title: Text('Pending Report'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PendingReport()));
+                },
+                leading: Icon(Icons.report),
+              ),
+              Divider(
+                height: 5,
+              ),
+              ListTile(
+                title: Text('About the App'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AboutApp()));
+                },
+                leading: Icon(Icons.info),
+              ),
+            ],
+          ),
         ),
         body: showReportList(),
         floatingActionButton: FloatingActionButton(

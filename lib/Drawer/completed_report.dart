@@ -23,7 +23,7 @@ class _CompletedReportState extends State<CompletedReport> {
     //_checkEmailVerification();
 
     list = new List();
-    reportQuery = dbRef.reference().orderByChild("status").equalTo("Completed");
+    reportQuery = dbRef.orderByChild("status").equalTo("Completed");
     _onReportAddedSubscription =
         reportQuery.onChildAdded.listen(_onReportAdded);
     _onReportChangedSubscription =
