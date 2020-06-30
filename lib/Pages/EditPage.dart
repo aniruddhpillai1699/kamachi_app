@@ -2,22 +2,22 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:kamachiapp/Services/authentication.dart';
 import 'package:kamachiapp/model/report.dart';
+import 'package:intl/intl.dart';
 
-class FormPage extends StatefulWidget {
-  FormPage({Key key, this.auth, this.userId, this.logoutCallback, this.report})
+class EditPage extends StatefulWidget {
+  EditPage({Key key, this.auth, this.userId, this.logoutCallback, this.report})
       : super(key: key);
   final BaseAuth auth;
   final VoidCallback logoutCallback;
   final String userId;
   final Report report;
   @override
-  _FormPageState createState() => _FormPageState();
+  _EditPageState createState() => _EditPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _EditPageState extends State<EditPage> {
   TextEditingController dateofcompcontroller;
   TextEditingController compcontroller;
   TextEditingController departcontroller;
@@ -36,7 +36,6 @@ class _FormPageState extends State<FormPage> {
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
-  @override
   void initState() {
     super.initState();
     date = DateTime.now();
@@ -88,22 +87,22 @@ class _FormPageState extends State<FormPage> {
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
     await flutterLocalNotificationsPlugin.show(
-        0, "Report Added", "Your Report Added Successfully", platform);
+        0, "Report Edited", "Your Report Edited Successfully", platform);
   }
 
   update(String token) {
     print('User Token: $token');
-    if (_formKey.currentState.validate()) {
-      dbRef.reference().child("reports/").push().set({
+    if (widget.report.key != null) {
+      dbRef.reference().child("reports/").child(widget.report.key).set({
         "date": dateofcompcontroller.text.toString(),
         "complaint": compcontroller.text.toString(),
-        "department": dropDownValue.toString(),
+        "department": departcontroller.text.toString(),
         "username": usercontroller.text.toString(),
-        "nature of complaints": dropDownValue1.toString(),
+        "nature of complaints": naturecontroller.text.toString(),
         "attended by": attendcontroller.text.toString(),
         "duration": duracontroller.text.toString(),
         "action taken": actioncontroller.text.toString(),
-        "status": dropDownValue2.toString(),
+        "status": statuscontroller.text.toString(),
         "status date": stdatecontroller.text.toString(),
         "remarks": remarkcontroller.text.toString(),
         "changes if any": changecontroller.text.toString(),
@@ -241,7 +240,7 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(20.0),
                     child: DropdownButtonFormField(
-                      value: dropDownValue,
+                      value: departcontroller.text,
                       icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
                         labelText: "Department",
@@ -257,7 +256,7 @@ class _FormPageState extends State<FormPage> {
                       }).toList(),
                       onChanged: (newValue) {
                         setState(() {
-                          dropDownValue = newValue;
+                          departcontroller.text = newValue;
                         });
                       },
                     ),
@@ -282,7 +281,7 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: DropdownButtonFormField(
-                      value: dropDownValue1,
+                      value: naturecontroller.text,
                       icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
                         labelText: "Nature of Complaints",
@@ -298,7 +297,7 @@ class _FormPageState extends State<FormPage> {
                       }).toList(),
                       onChanged: (newValue) {
                         setState(() {
-                          dropDownValue1 = newValue;
+                          naturecontroller.text = newValue;
                         });
                       },
                     ),
@@ -309,7 +308,6 @@ class _FormPageState extends State<FormPage> {
                       enabled: false,
                       controller: attendcontroller,
                       decoration: InputDecoration(
-                          enabled: false,
                           labelText: 'Attended By',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
@@ -341,7 +339,7 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: DropdownButtonFormField(
-                      value: dropDownValue2,
+                      value: statuscontroller.text,
                       icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
                         labelText: "Status",
@@ -406,10 +404,8 @@ class _FormPageState extends State<FormPage> {
                     padding: const EdgeInsets.all(20.0),
                     child: Builder(
                       builder: (context) => RaisedButton(
-                        child: Text(
-                          'Add',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: Text('Update',
+                            style: TextStyle(color: Colors.white)),
                         color: Colors.blueAccent,
                         onPressed: () {
                           firebaseMessaging.getToken().then((token) {

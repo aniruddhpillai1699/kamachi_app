@@ -15,6 +15,7 @@ class Report {
   String remarks;
   String changes;
   String userId;
+  String token;
 
   Report(
       this.dateofcomplaint,
@@ -29,7 +30,8 @@ class Report {
       this.statusdate,
       this.remarks,
       this.changes,
-      this.userId);
+      this.userId,
+      this.token);
 
   Report.map(dynamic obj) {
     this.dateofcomplaint = obj["date"];
@@ -45,21 +47,22 @@ class Report {
     this.remarks = obj["remarks"];
     this.changes = obj["changes"];
     this.userId = obj["userId"];
+    this.token = obj["token"];
   }
 
-  /*get _key => key;
-  get _date => date;
-  get _complaint => complaint;
-  get _department => department;
-  get _username => username;
-  get _natureofcomplaints => natureofcomplaints;
-  get _attendedby => attendedby;
-  get _duration => duration;
-  get _actiontaken => actiontaken;
-  get _status => status;
-  get _statusdate => statusdate;
-  get _remarks => remarks;
-  get _changes => changes;*/
+  // get _key => key;
+  //get _date => date;
+  //get _complaint => complaint;
+  // String get _department => department;
+  //get _username => username;
+  //String get _natureofcomplaints => natureofcomplaints;
+  //get _attendedby => attendedby;
+  //get _duration => duration;
+  //get _actiontaken => actiontaken;
+  //String get _status => status;
+  // get _statusdate => statusdate;
+  //get _remarks => remarks;
+  //get _changes => changes;
 
   Report.fromSnapshot(DataSnapshot snapshot) {
     key = snapshot.key;
@@ -76,6 +79,7 @@ class Report {
     remarks = snapshot.value["remarks"];
     changes = snapshot.value["changes if any"];
     userId = snapshot.value["userId"];
+    token = snapshot.value["token"];
   }
 
   toJson() {
@@ -92,7 +96,8 @@ class Report {
       "status date": statusdate,
       "remarks": remarks,
       "changes if any": changes,
-      "userId": userId
+      "userId": userId,
+      "token": token
     };
   }
 }
