@@ -251,6 +251,7 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
+                      enabled: false,
                       controller: attendcontroller,
                       decoration: InputDecoration(
                           labelText: 'Attended By',
