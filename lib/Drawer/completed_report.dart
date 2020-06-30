@@ -2,17 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:kamachiapp/Services/authentication.dart';
 import 'package:kamachiapp/model/report.dart';
 
 class CompletedReport extends StatefulWidget {
-  CompletedReport(
-      {Key key, this.auth, this.userId, this.logoutCallback, this.report})
-      : super(key: key);
-  final BaseAuth auth;
-  final VoidCallback logoutCallback;
-  final String userId;
-  final Report report;
   @override
   _CompletedReportState createState() => _CompletedReportState();
 }
@@ -31,7 +23,7 @@ class _CompletedReportState extends State<CompletedReport> {
     //_checkEmailVerification();
 
     list = new List();
-    reportQuery = dbRef.reference().orderByChild("status").equalTo("Completed");
+    reportQuery = dbRef.orderByChild("status").equalTo("Completed");
     _onReportAddedSubscription =
         reportQuery.onChildAdded.listen(_onReportAdded);
     _onReportChangedSubscription =
@@ -76,43 +68,43 @@ class _CompletedReportState extends State<CompletedReport> {
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                          "Date of Complaint: ${list[index].dateofcomplaint}")),
+                          "Date of Complaint: " + list[index].dateofcomplaint)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                          'Complaint Registered By: ${list[index].complaint} ')),
+                          'Complaint Registered By: ' + list[index].complaint)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Department:${list[index].department}')),
+                      child: Text('Department:' + list[index].department)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Username: ${list[index].username}')),
+                      child: Text('Username:' + list[index].username)),
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Text(
-                        'Nature of Complaint: ${list[index].natureofcomplaints}'),
+                    child: Text('Nature of Complaint: ' +
+                        list[index].natureofcomplaints),
                   ),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Attended By: ${list[index].attendedby}')),
+                      child: Text('Attended By: ' + list[index].attendedby)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Duration: ${list[index].duration}')),
+                      child: Text('Duration: ' + list[index].duration)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Action Taken: ${list[index].actiontaken}')),
+                      child: Text('Action Taken: ' + list[index].actiontaken)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Status: ${list[index].status}')),
+                      child: Text('Status: ' + list[index].status)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Status Date: ${list[index].statusdate}')),
+                      child: Text('Status Date: ' + list[index].statusdate)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Remarks: ${list[index].remarks}')),
+                      child: Text('Remarks:' + list[index].remarks)),
                   Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Text('Changes If Any: ${list[index].changes}')),
+                      child: Text('Changes If Any: ' + list[index].changes)),
                 ],
               ),
             ),
@@ -122,7 +114,7 @@ class _CompletedReportState extends State<CompletedReport> {
     } else {
       return Center(
           child: Text(
-        "Welcome. Completed list is empty",
+        "List is empty!! Reports are pending!!",
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 30.0),
       ));
@@ -134,6 +126,7 @@ class _CompletedReportState extends State<CompletedReport> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Completed Report'),
+        centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
       body: showReportList(),

@@ -1,7 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:kamachiapp/Services/authentication.dart';
 import 'package:kamachiapp/model/report.dart';
@@ -17,12 +15,12 @@ class FormPage extends StatefulWidget {
   _FormPageState createState() => _FormPageState();
 }
 
+final dbRef = FirebaseDatabase.instance;
+
 class _FormPageState extends State<FormPage> {
   TextEditingController dateofcompcontroller;
   TextEditingController compcontroller;
-  TextEditingController departcontroller;
   TextEditingController usercontroller;
-  TextEditingController naturecontroller;
   TextEditingController attendcontroller;
   TextEditingController duracontroller;
   TextEditingController actioncontroller;
@@ -32,10 +30,7 @@ class _FormPageState extends State<FormPage> {
   TextEditingController changecontroller;
   DateTime date;
   DateTime _date;
-  final dbRef = FirebaseDatabase.instance;
-  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
@@ -44,10 +39,7 @@ class _FormPageState extends State<FormPage> {
     dateofcompcontroller =
         TextEditingController(text: widget.report.dateofcomplaint);
     compcontroller = TextEditingController(text: widget.report.complaint);
-    departcontroller = TextEditingController(text: widget.report.department);
     usercontroller = TextEditingController(text: widget.report.username);
-    naturecontroller =
-        TextEditingController(text: widget.report.natureofcomplaints);
     attendcontroller = TextEditingController(text: widget.report.attendedby);
     duracontroller = TextEditingController(text: widget.report.duration);
     actioncontroller = TextEditingController(text: widget.report.actiontaken);
@@ -55,64 +47,6 @@ class _FormPageState extends State<FormPage> {
     stdatecontroller = TextEditingController(text: widget.report.statusdate);
     remarkcontroller = TextEditingController(text: widget.report.remarks);
     changecontroller = TextEditingController(text: widget.report.changes);
-    var android = new AndroidInitializationSettings('mipmap/ic_launcher');
-    var ios = new IOSInitializationSettings();
-    var platform = new InitializationSettings(android, ios);
-    flutterLocalNotificationsPlugin.initialize(platform);
-    firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) async {
-        print(" onLaunch called ${(msg)}");
-      },
-      onResume: (Map<String, dynamic> msg) async {
-        print(" onResume called ${(msg)}");
-      },
-      onMessage: (Map<String, dynamic> msg) async {
-        showNotification(msg);
-        print(" onMessage called ${(msg)}");
-      },
-    );
-    firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, alert: true, badge: true));
-    firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings setting) {
-      print('IOS Setting Registered');
-    });
-  }
-
-  showNotification(Map<String, dynamic> msg) async {
-    var android = new AndroidNotificationDetails(
-      'sdffds dsffds',
-      "CHANNEL NAME",
-      "channelDescription",
-    );
-    var iOS = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(
-        0, "Report Added", "Your Report Added Successfully", platform);
-  }
-
-  update(String token) {
-    print('User Token: $token');
-    if (_formKey.currentState.validate()) {
-      dbRef.reference().child("reports/").push().set({
-        "date": dateofcompcontroller.text.toString(),
-        "complaint": compcontroller.text.toString(),
-        "department": dropDownValue.toString(),
-        "username": usercontroller.text.toString(),
-        "nature of complaints": dropDownValue1.toString(),
-        "attended by": attendcontroller.text.toString(),
-        "duration": duracontroller.text.toString(),
-        "action taken": actioncontroller.text.toString(),
-        "status": dropDownValue2.toString(),
-        "status date": stdatecontroller.text.toString(),
-        "remarks": remarkcontroller.text.toString(),
-        "changes if any": changecontroller.text.toString(),
-        "userId": widget.userId,
-        "token": token
-      }).then((_) {
-        Navigator.pop(context);
-      });
-    }
   }
 
   pickedDate() async {
@@ -180,7 +114,6 @@ class _FormPageState extends State<FormPage> {
     "EPBAX",
     "Others"
   ];
-
   String dropDownValue = '1st Floor';
   String dropDownValue1 = 'Intercom';
   String dropDownValue2 = 'Pending';
@@ -255,10 +188,16 @@ class _FormPageState extends State<FormPage> {
                           child: new Text(value),
                         );
                       }).toList(),
-                      onChanged: (newValue) {
+                      onChanged: (String newValue) {
                         setState(() {
                           dropDownValue = newValue;
                         });
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please Select a Department';
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -290,16 +229,22 @@ class _FormPageState extends State<FormPage> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      items: listofComplaints.map((value) {
+                      items: listofComplaints.map((String value) {
                         return new DropdownMenuItem<String>(
                           value: value,
                           child: new Text(value),
                         );
                       }).toList(),
-                      onChanged: (newValue) {
+                      onChanged: (String newValue) {
                         setState(() {
                           dropDownValue1 = newValue;
                         });
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please Select a nature of complaint';
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -308,33 +253,48 @@ class _FormPageState extends State<FormPage> {
                     child: TextFormField(
                       controller: attendcontroller,
                       decoration: InputDecoration(
-                          enabled: false,
                           labelText: 'Attended By',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       textCapitalization: TextCapitalization.sentences,
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: duracontroller,
                       decoration: InputDecoration(
                           labelText: 'Duration',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: actioncontroller,
                       decoration: InputDecoration(
                           labelText: 'Action Taken',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Padding(
@@ -354,7 +314,11 @@ class _FormPageState extends State<FormPage> {
                           child: new Text(value),
                         );
                       }).toList(),
-                      onChanged: null,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropDownValue2 = newValue;
+                        });
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please Select a Status';
@@ -367,7 +331,6 @@ class _FormPageState extends State<FormPage> {
                     padding: EdgeInsets.all(25.0),
                     child: ListTile(
                       title: TextFormField(
-                        enabled: false,
                         controller: stdatecontroller,
                         decoration: InputDecoration(
                           labelText: 'Status Date: ',
@@ -382,38 +345,91 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: remarkcontroller,
                       decoration: InputDecoration(
                           labelText: 'Remarks',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: changecontroller,
                       decoration: InputDecoration(
                           labelText: 'Changes if Any',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     child: Builder(
                       builder: (context) => RaisedButton(
-                        child: Text(
-                          'Add',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: (widget.report.key != null)
+                            ? Text('Update',
+                                style: TextStyle(color: Colors.white))
+                            : Text(
+                                'Add',
+                                style: TextStyle(color: Colors.white),
+                              ),
                         color: Colors.blueAccent,
                         onPressed: () {
-                          firebaseMessaging.getToken().then((token) {
-                            update(token);
-                          });
+                          if (widget.report.key != null) {
+                            dbRef
+                                .reference()
+                                .child("reports")
+                                .child(widget.report.key)
+                                .set({
+                              "date": dateofcompcontroller.text.toString(),
+                              "complaint": compcontroller.text.toString(),
+                              "department": dropDownValue.toString(),
+                              "username": usercontroller.text.toString(),
+                              "nature of complaints": dropDownValue1.toString(),
+                              "attended by": attendcontroller.text.toString(),
+                              "duration": duracontroller.text.toString(),
+                              "action taken": actioncontroller.text.toString(),
+                              "status": dropDownValue2.toString(),
+                              "status date": stdatecontroller.text.toString(),
+                              "remarks": remarkcontroller.text.toString(),
+                              "changes if any":
+                                  changecontroller.text.toString(),
+                              "userId": widget.userId
+                            }).then((_) {
+                              Navigator.pop(context);
+                            });
+                          } else {
+                            dbRef.reference().child("reports").push().set({
+                              "date": dateofcompcontroller.text.toString(),
+                              "complaint": compcontroller.text.toString(),
+                              "department": dropDownValue.toString(),
+                              "username": usercontroller.text.toString(),
+                              "nature of complaints": dropDownValue1.toString(),
+                              "attended by": attendcontroller.text.toString(),
+                              "duration": duracontroller.text.toString(),
+                              "action taken": actioncontroller.text.toString(),
+                              "status": dropDownValue2.toString(),
+                              "status date": stdatecontroller.text.toString(),
+                              "remarks": remarkcontroller.text.toString(),
+                              "changes if any":
+                                  changecontroller.text.toString(),
+                              "userId": widget.userId
+                            }).then((_) {
+                              Navigator.pop(context);
+                            });
+                          }
                         },
                       ),
                     ),

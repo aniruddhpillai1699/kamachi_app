@@ -1,27 +1,20 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kamachiapp/Pages/EditPage.dart';
+import 'package:kamachiapp/Drawer/about_app.dart';
+import 'package:kamachiapp/Drawer/completed_report.dart';
+import 'package:kamachiapp/Drawer/pending_report.dart';
 import 'package:kamachiapp/Pages/FormPage.dart';
 import 'package:kamachiapp/model/report.dart';
 import 'package:kamachiapp/Services/authentication.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage(
-      {Key key,
-      this.auth,
-      this.userId,
-      this.logoutCallback,
-      this.report,
-      this.token})
+  HomePage({Key key, this.auth, this.userId, this.logoutCallback})
       : super(key: key);
   final BaseAuth auth;
   final VoidCallback logoutCallback;
   final String userId;
-  final Report report;
-  final FormPage token;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -29,33 +22,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Report> list = new List();
-
   final dbRef = FirebaseDatabase.instance;
   StreamSubscription<Event> _onReportAddedSubscription;
   StreamSubscription<Event> _onReportChangedSubscription;
   Query reportQuery;
   bool _isEmailVerified = false;
-  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
     list = new List();
-    firebaseMessaging.getToken().then((token) => update(token));
     _checkEmailVerification();
-  }
-
-  update(String token) {
     reportQuery = dbRef
         .reference()
-        .child("reports/")
+        .child("reports")
         .orderByChild("userId")
         .equalTo(widget.userId);
     _onReportAddedSubscription =
         reportQuery.onChildAdded.listen(_onReportAdded);
     _onReportChangedSubscription =
         reportQuery.onChildChanged.listen(_onReportUpdated);
-    setState(() {});
   }
 
   void _checkEmailVerification() async {
@@ -134,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         itemCount: list.length,
         shrinkWrap: true,
         padding: const EdgeInsets.all(20.0),
-        itemBuilder: (context, index) {
+        itemBuilder: (BuildContext context, int index) {
           return Card(
             child: InkWell(
               child: Column(
@@ -211,6 +197,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('IT Incident Report List'),
+          centerTitle: true,
           backgroundColor: Colors.blueAccent,
           actions: <Widget>[
             new FlatButton(
@@ -220,6 +207,59 @@ class _HomePageState extends State<HomePage> {
                   showAlertDialog(context);
                 })
           ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/download.png"),
+                        fit: BoxFit.cover),
+                    color: Colors.blueAccent),
+                child: Text(''),
+              ),
+              Divider(
+                height: 10.0,
+              ),
+              ListTile(
+                title: Text('Completed Report'),
+                leading: Icon(Icons.report),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CompletedReport()));
+                },
+              ),
+              Divider(
+                height: 5,
+              ),
+              ListTile(
+                title: Text('Pending Report'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PendingReport()));
+                },
+                leading: Icon(Icons.report),
+              ),
+              Divider(
+                height: 5,
+              ),
+              ListTile(
+                title: Text('About the App'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AboutApp()));
+                },
+                leading: Icon(Icons.info),
+              ),
+            ],
+          ),
         ),
         body: showReportList(),
         floatingActionButton: FloatingActionButton(
@@ -293,10 +333,8 @@ class _HomePageState extends State<HomePage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => EditPage(
-                report: report,
-                userId: widget.userId,
-              )),
+          builder: (context) =>
+              FormPage(report: report, userId: widget.userId)),
     );
   }
 
@@ -305,8 +343,8 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
           builder: (context) => FormPage(
-                report: Report(
-                    '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+                report:
+                    Report('', '', '', '', '', '', '', '', '', '', '', '', ''),
                 userId: widget.userId,
               )),
     );

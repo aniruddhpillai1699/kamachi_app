@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'IT Incident Report',
+      debugShowCheckedModeBanner: false,
+      title: 'Kamachi App',
       home: new RootPage(auth: new Auth()),
     );
   }
