@@ -108,7 +108,6 @@ class _FormPageState extends State<FormPage> {
         "remarks": remarkcontroller.text.toString(),
         "changes if any": changecontroller.text.toString(),
         "userId": widget.userId,
-        "token": token
       }).then((_) {
         Navigator.pop(context);
       });
@@ -306,6 +305,17 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
+                      enabled: true,
+                      controller: remarkcontroller,
+                      decoration: InputDecoration(
+                          labelText: 'Remarks',
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: TextFormField(
                       enabled: false,
                       controller: attendcontroller,
                       decoration: InputDecoration(
@@ -378,17 +388,6 @@ class _FormPageState extends State<FormPage> {
                       ),
                       onTap: _pickedDate1,
                       leading: Icon(Icons.calendar_today),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(25.0),
-                    child: TextFormField(
-                      enabled: false,
-                      controller: remarkcontroller,
-                      decoration: InputDecoration(
-                          labelText: 'Remarks',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
                     ),
                   ),
                   Padding(
