@@ -100,7 +100,7 @@ class _FormPageState extends State<FormPage> {
         "department": dropDownValue.toString(),
         "username": usercontroller.text.toString(),
         "nature of complaints": dropDownValue1.toString(),
-        "attended by": attendcontroller.text.toString(),
+        "attended by": dropDownValue3.toString(),
         "duration": duracontroller.text.toString(),
         "action taken": actioncontroller.text.toString(),
         "status": dropDownValue2.toString(),
@@ -108,6 +108,7 @@ class _FormPageState extends State<FormPage> {
         "remarks": remarkcontroller.text.toString(),
         "changes if any": changecontroller.text.toString(),
         "userId": widget.userId,
+        "token": token
       }).then((_) {
         Navigator.pop(context);
       });
@@ -179,10 +180,19 @@ class _FormPageState extends State<FormPage> {
     "EPBAX",
     "Others"
   ];
-
+  final listofnames = [
+    'Suresh Pillai',
+    'G N Jha',
+    'Deepak',
+    'Satish',
+    'Suseedran',
+    'Bronson',
+    'Surendran'
+  ];
   String dropDownValue = '1st Floor';
   String dropDownValue1 = 'Intercom';
   String dropDownValue2 = 'Pending';
+  String dropDownValue3 = 'Suresh Pillai';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -315,21 +325,31 @@ class _FormPageState extends State<FormPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
-                    child: TextFormField(
-                      enabled: false,
-                      controller: attendcontroller,
+                    child: DropdownButtonFormField(
+                      value: dropDownValue3,
+                      icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
-                          enabled: false,
-                          labelText: 'Attended By',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      textCapitalization: TextCapitalization.sentences,
+                        labelText: "Attended By",
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      items: listofnames.map((value) {
+                        return new DropdownMenuItem<String>(
+                          value: value,
+                          child: new Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropDownValue3 = newValue;
+                        });
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: duracontroller,
                       decoration: InputDecoration(
                           labelText: 'Duration',
@@ -340,7 +360,6 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: actioncontroller,
                       decoration: InputDecoration(
                           labelText: 'Action Taken',
@@ -365,7 +384,9 @@ class _FormPageState extends State<FormPage> {
                           child: new Text(value),
                         );
                       }).toList(),
-                      onChanged: null,
+                      onChanged: (String newValue) {
+                        dropDownValue2 = newValue;
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please Select a Status';
@@ -378,7 +399,6 @@ class _FormPageState extends State<FormPage> {
                     padding: EdgeInsets.all(25.0),
                     child: ListTile(
                       title: TextFormField(
-                        enabled: false,
                         controller: stdatecontroller,
                         decoration: InputDecoration(
                           labelText: 'Status Date: ',
@@ -393,7 +413,6 @@ class _FormPageState extends State<FormPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: changecontroller,
                       decoration: InputDecoration(
                           labelText: 'Changes if Any',

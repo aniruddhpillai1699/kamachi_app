@@ -179,10 +179,15 @@ class _EditPageState extends State<EditPage> {
     "EPBAX",
     "Others"
   ];
-
-  String dropDownValue = '1st Floor';
-  String dropDownValue1 = 'Intercom';
-  String dropDownValue2 = 'Pending';
+  final listofnames = [
+    'Suresh Pillai',
+    'G N Jha',
+    'Deepak',
+    'Satish',
+    'Suseedran',
+    'Bronson',
+    'Surendran'
+  ];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -305,7 +310,6 @@ class _EditPageState extends State<EditPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: true,
                       controller: remarkcontroller,
                       decoration: InputDecoration(
                           labelText: 'Remarks',
@@ -315,20 +319,31 @@ class _EditPageState extends State<EditPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
-                    child: TextFormField(
-                      enabled: false,
-                      controller: attendcontroller,
+                    child: DropdownButtonFormField(
+                      value: attendcontroller.text,
+                      icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
-                          labelText: 'Attended By',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0))),
-                      textCapitalization: TextCapitalization.sentences,
+                        labelText: "Nature of Complaints",
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      items: listofnames.map((value) {
+                        return new DropdownMenuItem<String>(
+                          value: value,
+                          child: new Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          attendcontroller.text = newValue;
+                        });
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: duracontroller,
                       decoration: InputDecoration(
                           labelText: 'Duration',
@@ -339,7 +354,6 @@ class _EditPageState extends State<EditPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: actioncontroller,
                       decoration: InputDecoration(
                           labelText: 'Action Taken',
@@ -364,7 +378,9 @@ class _EditPageState extends State<EditPage> {
                           child: new Text(value),
                         );
                       }).toList(),
-                      onChanged: null,
+                      onChanged: (String newValue) {
+                        statuscontroller.text = newValue;
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please Select a Status';
@@ -377,7 +393,6 @@ class _EditPageState extends State<EditPage> {
                     padding: EdgeInsets.all(25.0),
                     child: ListTile(
                       title: TextFormField(
-                        enabled: false,
                         controller: stdatecontroller,
                         decoration: InputDecoration(
                           labelText: 'Status Date: ',
@@ -392,7 +407,6 @@ class _EditPageState extends State<EditPage> {
                   Padding(
                     padding: EdgeInsets.all(25.0),
                     child: TextFormField(
-                      enabled: false,
                       controller: changecontroller,
                       decoration: InputDecoration(
                           labelText: 'Changes if Any',
