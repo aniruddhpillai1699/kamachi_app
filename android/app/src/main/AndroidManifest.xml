@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="IT Incident Report App"
+        android:label="IT Incident Report HO"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="Instantiatable">
         <activity

@@ -144,7 +144,16 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
-  final listofStatus = ["Completed", "Pending"];
+  final listofStatus = [
+    "Active",
+    "Inactive",
+    "Open",
+    "Reopen",
+    "Partially Open",
+    "Under Observation",
+    "Rejected",
+    "Closed"
+  ];
   final listofDepartements = [
     "1st Floor",
     "TP Office",
@@ -175,18 +184,20 @@ class _EditPageState extends State<EditPage> {
     "Firewall",
     "CCTV",
     "DVR",
+    "Genset",
+    "UPS",
     "NVR",
     "EPBAX",
     "Others"
   ];
   final listofnames = [
-    'Suresh Pillai',
-    'G N Jha',
-    'Deepak',
-    'Satish',
-    'Suseedran',
-    'Bronson',
-    'Surendran'
+    "Suresh Pillai",
+    "G N Jha",
+    "Deepak",
+    "Satish",
+    "Suseedran",
+    "Bronson",
+    "Surendran"
   ];
 
   final _formKey = GlobalKey<FormState>();

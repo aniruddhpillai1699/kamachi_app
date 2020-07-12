@@ -145,7 +145,16 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  final listofStatus = ["Completed", "Pending"];
+  final listofStatus = [
+    "Active",
+    "Inactive",
+    "Open",
+    "Reopen",
+    "Partially Open",
+    "Under Observation",
+    "Rejected",
+    "Closed"
+  ];
   final listofDepartements = [
     "1st Floor",
     "TP Office",
@@ -176,22 +185,24 @@ class _FormPageState extends State<FormPage> {
     "Firewall",
     "CCTV",
     "DVR",
+    "Genset",
+    "UPS",
     "NVR",
     "EPBAX",
     "Others"
   ];
   final listofnames = [
-    'Suresh Pillai',
-    'G N Jha',
-    'Deepak',
-    'Satish',
-    'Suseedran',
-    'Bronson',
-    'Surendran'
+    "Suresh Pillai",
+    "G N Jha",
+    "Deepak",
+    "Satish",
+    "Suseedran",
+    "Bronson",
+    "Surendran"
   ];
   String dropDownValue = '1st Floor';
   String dropDownValue1 = 'Intercom';
-  String dropDownValue2 = 'Pending';
+  String dropDownValue2 = 'Active';
   String dropDownValue3 = 'Suresh Pillai';
 
   final _formKey = GlobalKey<FormState>();
