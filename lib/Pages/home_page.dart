@@ -140,7 +140,6 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Divider(height: 5.0),
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
