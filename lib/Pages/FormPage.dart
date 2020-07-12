@@ -227,7 +227,7 @@ class _FormPageState extends State<FormPage> {
                       title: TextFormField(
                         controller: dateofcompcontroller,
                         decoration: InputDecoration(
-                            labelText: 'Date of Complaint:',
+                            labelText: 'Date of Complaint*',
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0))),
                         validator: (value) {
@@ -246,7 +246,7 @@ class _FormPageState extends State<FormPage> {
                     child: TextFormField(
                       controller: compcontroller,
                       decoration: InputDecoration(
-                          labelText: 'Complaint Registered By',
+                          labelText: 'Complaint Registered By*',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
                       validator: (value) {
@@ -287,7 +287,7 @@ class _FormPageState extends State<FormPage> {
                     child: TextFormField(
                       controller: usercontroller,
                       decoration: InputDecoration(
-                          labelText: 'User Name',
+                          labelText: 'User Name*',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
                       validator: (value) {
@@ -305,7 +305,7 @@ class _FormPageState extends State<FormPage> {
                       value: dropDownValue1,
                       icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
-                        labelText: "`Nature of Complaints",
+                        labelText: "Nature of Complaints",
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -412,7 +412,7 @@ class _FormPageState extends State<FormPage> {
                       title: TextFormField(
                         controller: stdatecontroller,
                         decoration: InputDecoration(
-                          labelText: 'Status Date: ',
+                          labelText: 'Status Date',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),

@@ -222,7 +222,7 @@ class _EditPageState extends State<EditPage> {
                       title: TextFormField(
                         controller: dateofcompcontroller,
                         decoration: InputDecoration(
-                            labelText: 'Date of Complaint:',
+                            labelText: 'Date of Complaint*',
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0))),
                         validator: (value) {
@@ -241,7 +241,7 @@ class _EditPageState extends State<EditPage> {
                     child: TextFormField(
                       controller: compcontroller,
                       decoration: InputDecoration(
-                          labelText: 'Complaint Registered By',
+                          labelText: 'Complaint Registered By*',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
                       validator: (value) {
@@ -282,7 +282,7 @@ class _EditPageState extends State<EditPage> {
                     child: TextFormField(
                       controller: usercontroller,
                       decoration: InputDecoration(
-                          labelText: 'User Name',
+                          labelText: 'User Name*',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
                       validator: (value) {
@@ -406,7 +406,7 @@ class _EditPageState extends State<EditPage> {
                       title: TextFormField(
                         controller: stdatecontroller,
                         decoration: InputDecoration(
-                          labelText: 'Status Date: ',
+                          labelText: 'Status Date',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
