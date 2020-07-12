@@ -334,7 +334,7 @@ class _EditPageState extends State<EditPage> {
                       value: attendcontroller.text,
                       icon: Icon(Icons.arrow_downward),
                       decoration: InputDecoration(
-                        labelText: "Nature of Complaints",
+                        labelText: "Attended By",
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
