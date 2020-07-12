@@ -283,7 +283,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: usercontroller,
                       decoration: InputDecoration(
@@ -300,7 +300,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: DropdownButtonFormField(
                       value: dropDownValue1,
                       icon: Icon(Icons.arrow_downward),
@@ -324,7 +324,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: TextFormField(
                       enabled: true,
                       controller: remarkcontroller,
@@ -335,7 +335,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: DropdownButtonFormField(
                       value: dropDownValue3,
                       icon: Icon(Icons.arrow_downward),
@@ -359,7 +359,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: duracontroller,
                       decoration: InputDecoration(
@@ -369,7 +369,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: actioncontroller,
                       decoration: InputDecoration(
@@ -379,7 +379,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: DropdownButtonFormField(
                       value: dropDownValue2,
                       icon: Icon(Icons.arrow_downward),
@@ -407,7 +407,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: ListTile(
                       title: TextFormField(
                         controller: stdatecontroller,
@@ -422,7 +422,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(25.0),
+                    padding: EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: changecontroller,
                       decoration: InputDecoration(
