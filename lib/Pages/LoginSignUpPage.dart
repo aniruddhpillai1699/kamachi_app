@@ -160,7 +160,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       padding: EdgeInsets.all(20.0),
       child: Center(
           child: Text(
-        'Kamachi Industries Incident Report Management',
+        'Kamachi Industries Incident Report Management-HO',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 30.0),
       )),

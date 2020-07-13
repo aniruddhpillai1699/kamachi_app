@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'IT Incident Report',
+      title: 'IT Incident Report-HO',
       home: new RootPage(auth: new Auth()),
     );
   }
